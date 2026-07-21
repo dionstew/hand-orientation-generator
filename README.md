@@ -1,5 +1,15 @@
 # Hand Orientation Generator
 
+<table>
+  <align>center</align>
+  <tr>
+    <td><img src="imageL1.png" width="45%" alt="Left Stereo Image"></td>
+    <td><img src="imageR1.png" width="45%" alt="Right Stereo Image"></td>
+    <td><img src="sample-output.png" width="45%" alt="Output"></td>
+  </tr>
+</table>
+
+
 A pseudo-dataset generation and PoseCNN-style training pipeline for estimating 6D hand pose from stereo images.
 
 This repository provides a research-oriented pipeline for generating pseudo ground-truth labels of hand translation and orientation using stereo vision, hand landmarks, disparity-based 3D reconstruction, and temporal quaternion smoothing. The generated labels are then used to train PoseCNN-style segmentation, translation, and rotation branches.
@@ -48,3 +58,5 @@ Rotation matrix and quaternion generation
 Temporal quaternion smoothing
         ↓
 Pseudo ground-truth CSV + visualization outputs
+```
+
