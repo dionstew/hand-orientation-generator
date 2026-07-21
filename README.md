@@ -1,13 +1,8 @@
 # Hand Orientation Generator
 
-<table>
-  <align>center</align>
-  <tr>
-    <td><img src="imageL1.png" width="45%" alt="Left Stereo Image"></td>
-    <td><img src="imageR1.png" width="45%" alt="Right Stereo Image"></td>
-    <td><img src="sample-output.png" width="45%" alt="Output"></td>
-  </tr>
-</table>
+<image>
+<img src="hand-orientation-generator/inputstereo-outputtranslation.png" alt="Samples"/>
+</image>
 
 
 A pseudo-dataset generation and PoseCNN-style training pipeline for estimating 6D hand pose from stereo images.
