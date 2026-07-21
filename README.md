@@ -1,7 +1,7 @@
 # Hand Orientation Generator
 
 <image>
-<img src="hand-orientation-generator/inputstereo-outputtranslation.png"/>
+<img src="./inputstereo-outputtranslation.png"/>
 </image>
 
 
