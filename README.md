@@ -206,10 +206,20 @@ source .venv/bin/activate
 
 Install dependencies:
 
+Base install
 ```bash
-pip install numpy pandas opencv-python opencv-contrib-python mediapipe matplotlib
+pip install -r requirements.txt
 ```
 
+SAM install
+```bash
+pip install -r requirements-sam.txt
+```
+
+Open3d or for other optional features
+```bash
+pip install -r requirements-optional.txt
+```
 ---
 
 ## Required Files
