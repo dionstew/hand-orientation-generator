@@ -1,29 +1,53 @@
 # Hand Orientation Generator
 
-<image>
-        <img src="./3inputstereo-outputtranslation.png"/>
-</image>
+A stereo-vision-based pseudo-dataset generator for estimating hand translation and orientation from stereo images.
 
+This repository provides a research-oriented pipeline for generating pseudo ground-truth labels of hand pose using stereo vision, hand landmarks, disparity-based 3D reconstruction, geometric hand-frame estimation, and temporal quaternion smoothing.
 
-A pseudo-dataset generation and PoseCNN-style training pipeline for estimating 6D hand pose from stereo images.
-
-This repository provides a research-oriented pipeline for generating pseudo ground-truth labels of hand translation and orientation using stereo vision, hand landmarks, disparity-based 3D reconstruction, and temporal quaternion smoothing. The generated labels are then used to train PoseCNN-style segmentation, translation, and rotation branches.
-
-> This project is still under active development. The generated labels should be treated as pseudo ground truth, not manually verified ground truth.
+> This project focuses only on pseudo-dataset generation. Model training and PoseCNN-based hand pose estimation will be provided in a separate repository.
 
 ---
 
 ## Overview
 
-The main goal of this project is to build a semi-automatic pipeline for generating hand pose labels from stereo image data. Instead of manually annotating 6D hand pose, the system estimates:
+<image>
+        <img src="./3inputstereo-outputtranslation.png"/>
+</image>
 
-- hand segmentation mask,
-- 3D hand landmarks,
+The main goal of this project is to generate pseudo ground-truth labels for hand pose estimation from stereo image data.
+
+Instead of manually annotating 6D hand pose, this pipeline estimates:
+
+- rectified left image,
+- disparity map,
+- 2D hand landmarks,
+- reconstructed 3D hand landmarks,
 - hand translation `[Tx, Ty, Tz]`,
 - hand rotation matrix `R`,
-- quaternion orientation `[qw, qx, qy, qz]`.
+- quaternion orientation `[qw, qx, qy, qz]`,
+- visualization of hand landmarks and local hand axes.
 
-The generated pseudo labels are used to train and evaluate PoseCNN-inspired models for hand pose estimation.
+The generated pseudo labels can later be used as training data for external hand pose estimation models, including PoseCNN-style architectures.
+
+---
+
+## Scope of This Repository
+
+This repository is limited to pseudo-dataset generation.
+
+### Included
+
+```text
+Stereo image preprocessing
+Stereo rectification
+Disparity estimation
+Hand landmark detection
+2D-to-3D landmark reconstruction
+Hand coordinate frame estimation
+Translation and rotation pseudo-label generation
+Quaternion temporal smoothing
+CSV and visualization output generation
+```
 
 ---
 
@@ -31,27 +55,283 @@ The generated pseudo labels are used to train and evaluate PoseCNN-inspired mode
 
 The pseudo-dataset generation pipeline follows these stages:
 
+<image>
+        <img src="./Diagram-Block-3DHandTracker4.png"/>
+</image>
+
+<!-- 
+The stereo input is assumed to be a side-by-side image where the left camera image is stored on the left half and the right camera image is stored on the right half. -->
+
+<!-- 
+---
+
+## Method Summary
+
+### 1. Stereo Rectification and Disparity Estimation
+
+The input stereo image is first split into left and right camera images. Both images are rectified using stereo calibration parameters.
+
+Disparity is estimated using StereoSGBM and refined using a WLS filter.
+
+The disparity map is then used to reconstruct 3D hand landmark positions using the reprojection matrix `Q`.
+
+---
+
+### 2. Hand Landmark Detection
+
+Hand landmarks are detected from the rectified left image using MediaPipe Hand Landmarker.
+
+The detected 2D landmarks are used as reference points for extracting corresponding 3D coordinates from the disparity-based point cloud.
+
+---
+
+### 3. 2D-to-3D Landmark Reconstruction
+
+For each detected 2D hand landmark, a small local window around the landmark position is sampled from the disparity map.
+
+The median valid 3D point inside the window is used as the reconstructed 3D landmark position.
+
+This step reduces the effect of local disparity noise.
+
+---
+
+### 4. Hand Coordinate Frame Estimation
+
+The local hand coordinate frame is constructed from reconstructed 3D landmarks.
+The frame is defined as:
+
+- origin: palm center,
+- `Z` axis: palm normal estimated using SVD / plane fitting,
+- `Y` axis: wrist-to-middle-MCP direction projected onto the palm plane,
+- `X` axis: cross product between `Y` and `Z`.
+
+The resulting rotation matrix is represented as:
+
 ```text
-Stereo side-by-side image
-        ↓
-Split left-right image
-        ↓
-Stereo rectification
-        ↓
-StereoSGBM + WLS disparity estimation
-        ↓
-MediaPipe hand landmark detection on rectified left image
-        ↓
-2D landmark → 3D landmark reconstruction using disparity + Q matrix
-        ↓
-Palm center and palm normal estimation
-        ↓
-Hand coordinate frame construction
-        ↓
-Rotation matrix and quaternion generation
-        ↓
-Temporal quaternion smoothing
-        ↓
-Pseudo ground-truth CSV + visualization outputs
+R_cam_hand
 ```
 
+and the translation vector is represented as:
+
+```text
+t_cam_hand = [Tx, Ty, Tz]
+```
+
+---
+
+### 5. Quaternion Generation
+
+The hand rotation matrix is converted into quaternion format:
+
+```text
+[qw, qx, qy, qz]
+```
+
+This quaternion represents the estimated hand orientation relative to the camera coordinate frame.
+
+---
+
+### 6. Temporal Quaternion Smoothing
+
+Raw orientation labels may jitter due to disparity noise and palm normal instability.
+
+To reduce frame-to-frame orientation instability, this project applies:
+
+```text
+Quaternion sign-continuity correction
++
+Normalized exponential moving average smoothing
+```
+
+This produces more stable pseudo orientation labels across video frames. -->
+
+---
+
+## Output Structure
+
+The generated pseudo dataset is saved as:
+
+```text
+pseudo_dataset_output/
+├── img_left/
+│   └── rectified left images
+├── disparity/
+│   └── disparity visualizations
+├── landmark/
+│   └── 2D and 3D hand landmarks
+├── vis_2d_landmark/
+│   └── hand landmark and local axis visualizations
+└── pseudo_ground_truth_summary.csv
+```
+
+---
+
+## Output CSV Format
+
+The main output file is:
+
+```text
+pseudo_ground_truth_summary.csv
+```
+
+The CSV contains:
+
+```text
+filename
+relative_path
+output_stem
+status
+valid_landmarks_3d
+temporal_smoothing
+Tx, Ty, Tz
+qw, qx, qy, qz
+R00, R01, R02
+R10, R11, R12
+R20, R21, R22
+error
+```
+
+If temporal smoothing is enabled, the CSV may also include raw and smoothed pose values.
+
+---
+
+## Installation
+
+Create a Python environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install numpy pandas opencv-python opencv-contrib-python mediapipe matplotlib
+```
+
+---
+
+## Required Files
+
+Before running the pipeline, prepare:
+
+1. stereo side-by-side image folder,
+2. stereo calibration file in `.npz` format,
+3. MediaPipe `hand_landmarker.task` model.
+
+The calibration file should contain:
+
+```text
+K_left
+D_left
+K_right
+D_right
+R
+T
+```
+
+The pipeline computes rectification matrices and the reprojection matrix `Q` internally.
+
+---
+
+## Usage
+
+Example command:
+
+```bash
+python data-extraction/pseudo_dataset_extraction_pipeline_nested.py \
+  --input-dir /path/to/stereo_image_folder \
+  --calib /path/to/calibration.npz \
+  --hand-model /path/to/hand_landmarker.task \
+  --output-dir pseudo_dataset_output
+```
+
+For the temporal smoothing version:
+
+```bash
+python data-extraction/pseudo_dataset_extraction_pipeline_nested_temporal.py \
+  --input-dir /path/to/stereo_image_folder \
+  --calib /path/to/calibration.npz \
+  --hand-model /path/to/hand_landmarker.task \
+  --output-dir pseudo_dataset_output \
+  --rotation-smoothing-alpha 0.2
+```
+
+Lower `alpha` values produce smoother orientation labels but may introduce more delay.
+
+Example:
+
+```bash
+--rotation-smoothing-alpha 0.1
+```
+
+Higher `alpha` values make the labels more responsive but less smooth.
+
+Example:
+
+```bash
+--rotation-smoothing-alpha 0.3
+```
+
+---
+
+## Notes on Coordinate System
+
+The 3D reconstruction scale follows the stereo calibration scale.
+
+For example, if the chessboard square size during calibration is:
+
+```text
+SQUARE_SIZE = 0.03
+```
+
+then reconstructed 3D points and translation values are expressed in meters.
+
+---
+
+## Current Limitations
+
+This repository is a research prototype.
+
+Current limitations include:
+
+- pseudo labels depend on stereo disparity quality,
+- hand landmark detection errors propagate into 3D pose estimation,
+- palm normal estimation can be noisy when disparity is unstable,
+- quaternion smoothing reduces jitter but may introduce temporal delay,
+- the current pipeline assumes one visible hand,
+- generated labels should be visually inspected before use.
+
+---
+
+## Recommended Workflow
+
+```text
+1. Calibrate stereo camera
+2. Prepare stereo side-by-side images
+3. Run pseudo-dataset generation
+4. Inspect landmark and axis visualizations
+5. Check failed frames in the summary CSV
+6. Adjust disparity and smoothing parameters if needed
+7. Use generated pseudo labels for downstream model training in a separate repository
+```
+
+---
+
+## Future Work
+
+Planned extensions include:
+
+- improved disparity filtering,
+- robust palm normal estimation,
+- automatic outlier rejection,
+- better temporal filtering,
+- multi-hand support,
+- integration with a separate PoseCNN-style training repository.
+
+---
+
+## License
+
+This project is released under the MIT License.
