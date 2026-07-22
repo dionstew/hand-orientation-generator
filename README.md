@@ -11,7 +11,7 @@ This repository provides a research-oriented pipeline for generating pseudo grou
 ## Overview
 
 <image>
-        <img src="./2inputstereo-outputtranslation.png"/>
+        <img src="./3inputstereo-outputtranslation.png"/>
 </image>
 
 The main goal of this project is to generate pseudo ground-truth labels for hand pose estimation from stereo image data.
