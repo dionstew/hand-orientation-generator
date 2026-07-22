@@ -3,6 +3,7 @@
 Folder yang mengandung proses ekstraksi data gambar.
 
 ## Tree
+```text
 data-extraction/
   |- data/
   |  |- featuremaps/
@@ -17,3 +18,4 @@ data-extraction/
   |- trimmed_stereo/                    
   |  |- _stereotrimmedbyname/stereo.jpg_
   -- _Files_ 
+```
