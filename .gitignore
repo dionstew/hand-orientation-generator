@@ -1,11 +1,20 @@
 .venv/
-outputs/
-data-extraction/input_for_stereocalib/
-data-extraction/pseudo_dataset_08072026/
-data-extraction/pseudo_dataset_08072026_temporal_true5/
-data-extraction/video-perekaman-raw/
-data-extraction/*.pth
-data-extraction/*.task
-output/hough_roi_test_12072026_0017/
+
+# Data and Log Files
+*.csv
+*.json
+*.txt
+*.v2
+
+# Image Files
 *.png
-archive_experiments
+*.jpg
+
+# Video Files
+*.mp4
+*.avi
+
+# Trained models
+*.pth
+*.task
+*.keras
