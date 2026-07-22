@@ -49,24 +49,15 @@ Quaternion temporal smoothing
 CSV and visualization output generation
 ```
 
-### Not Included
-
-```text
-PoseCNN model training
-Segmentation branch training
-Translation branch training
-Rotation branch training
-Full 6D pose inference model
-Model benchmarking
-```
-
-Those components will be handled in a separate repository.
-
 ---
 
 ## Pipeline
 
 The pseudo-dataset generation pipeline follows these stages:
+
+<image>
+        <img src="./Diagram-Block-3DHandTracker4.png"/>
+</image>
 
 ```text
 Stereo side-by-side image
@@ -93,7 +84,7 @@ Pseudo ground-truth CSV and visualization outputs
 ```
 
 The stereo input is assumed to be a side-by-side image where the left camera image is stored on the left half and the right camera image is stored on the right half.
-
+<!-- 
 ---
 
 ## Method Summary
@@ -129,7 +120,6 @@ This step reduces the effect of local disparity noise.
 ### 4. Hand Coordinate Frame Estimation
 
 The local hand coordinate frame is constructed from reconstructed 3D landmarks.
-
 The frame is defined as:
 
 - origin: palm center,
@@ -175,7 +165,7 @@ Quaternion sign-continuity correction
 Normalized exponential moving average smoothing
 ```
 
-This produces more stable pseudo orientation labels across video frames.
+This produces more stable pseudo orientation labels across video frames. -->
 
 ---
 
@@ -214,6 +204,7 @@ relative_path
 output_stem
 status
 valid_landmarks_3d
+temporal_smoothing
 Tx, Ty, Tz
 qw, qx, qy, qz
 R00, R01, R02
