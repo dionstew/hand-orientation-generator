@@ -241,6 +241,8 @@ R
 T
 ```
 
+The provided stereo calibration file is for our setup for our own [Stereo HBV Camera](https://www.hbvcamera.com/1MP-%20HD-usb-cameras/hbvcam-ov9732-1mp-hd-face-ar-depth-detection-binocular-synchronous-camera-module.html)
+
 The pipeline computes rectification matrices and the reprojection matrix `Q` internally.
 
 ---
@@ -284,6 +286,8 @@ Example:
 --rotation-smoothing-alpha 0.3
 ```
 
+This is also applicable for translation smoothing.
+
 ---
 
 ## Notes on Coordinate System
@@ -297,21 +301,6 @@ SQUARE_SIZE = 0.03
 ```
 
 then reconstructed 3D points and translation values are expressed in meters.
-
----
-
-## Current Limitations
-
-This repository is a research prototype.
-
-Current limitations include:
-
-- pseudo labels depend on stereo disparity quality,
-- hand landmark detection errors propagate into 3D pose estimation,
-- palm normal estimation can be noisy when disparity is unstable,
-- quaternion smoothing reduces jitter but may introduce temporal delay,
-- the current pipeline assumes one visible hand,
-- generated labels should be visually inspected before use.
 
 ---
 
@@ -329,19 +318,23 @@ Current limitations include:
 
 ---
 
-## Future Work
-
-Planned extensions include:
-
-- improved disparity filtering,
-- robust palm normal estimation,
-- automatic outlier rejection,
-- better temporal filtering,
-- multi-hand support,
-- integration with a separate PoseCNN-style training repository.
-
----
-
 ## License
 
 This project is released under the MIT License.
+
+---
+
+# Citation
+```bash
+@INPROCEEDINGS{10586620,
+  author={Setiawan, Dion and Yuniarno, Eko Mulyanto and Purnomo, Mauridhy Hery},
+  booktitle={2024 IEEE International Conference on Computational Intelligence and Virtual Environments for Measurement Systems and Applications (CIVEMSA)}, 
+  title={Hand Orientation Detection Based on Disparity Maps from Stereo Imagery}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-6},
+  keywords={Three-dimensional displays;Shape;Robot vision systems;Virtual environments;Cameras;Assistive robots;Task analysis;Elderly Assistive Robots;Interaction;Stereo-Vision;3D Hand Tracking},
+  doi={10.1109/CIVEMSA58715.2024.10586620}}
+
+```
