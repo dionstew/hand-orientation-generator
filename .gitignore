@@ -8,3 +8,4 @@ data-extraction/*.pth
 data-extraction/*.task
 output/hough_roi_test_12072026_0017/
 *.png
+archive_experiments
