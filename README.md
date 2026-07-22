@@ -252,7 +252,7 @@ The pipeline computes rectification matrices and the reprojection matrix `Q` int
 Example command:
 
 ```bash
-python data-extraction/pseudo_dataset_extraction_pipeline_nested.py \
+python data-extraction/generate_pseudo_dataset.py \
   --input-dir /path/to/stereo_image_folder \
   --calib /path/to/calibration.npz \
   --hand-model /path/to/hand_landmarker.task \
@@ -262,7 +262,7 @@ python data-extraction/pseudo_dataset_extraction_pipeline_nested.py \
 For the temporal smoothing version:
 
 ```bash
-python data-extraction/pseudo_dataset_extraction_pipeline_nested_temporal.py \
+python data-extraction/generate_pseudo_dataset_temporal.py \
   --input-dir /path/to/stereo_image_folder \
   --calib /path/to/calibration.npz \
   --hand-model /path/to/hand_landmarker.task \
