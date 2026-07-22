@@ -59,8 +59,9 @@ The pseudo-dataset generation pipeline follows these stages:
         <img src="./Diagram-Block-3DHandTracker4.png"/>
 </image>
 
+<!-- 
+The stereo input is assumed to be a side-by-side image where the left camera image is stored on the left half and the right camera image is stored on the right half. -->
 
-The stereo input is assumed to be a side-by-side image where the left camera image is stored on the left half and the right camera image is stored on the right half.
 <!-- 
 ---
 
