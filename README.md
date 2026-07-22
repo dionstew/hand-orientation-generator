@@ -59,29 +59,6 @@ The pseudo-dataset generation pipeline follows these stages:
         <img src="./Diagram-Block-3DHandTracker4.png"/>
 </image>
 
-```text
-Stereo side-by-side image
-        ↓
-Split left-right image
-        ↓
-Stereo rectification
-        ↓
-StereoSGBM + WLS disparity estimation
-        ↓
-MediaPipe hand landmark detection
-        ↓
-2D landmark to 3D landmark reconstruction
-        ↓
-Palm center and palm normal estimation
-        ↓
-Hand coordinate frame construction
-        ↓
-Rotation matrix and quaternion generation
-        ↓
-Temporal quaternion smoothing
-        ↓
-Pseudo ground-truth CSV and visualization outputs
-```
 
 The stereo input is assumed to be a side-by-side image where the left camera image is stored on the left half and the right camera image is stored on the right half.
 <!-- 
