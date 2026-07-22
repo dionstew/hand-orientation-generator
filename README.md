@@ -241,7 +241,7 @@ R
 T
 ```
 
-The provided stereo calibration file is for our setup for our own [Stereo HBV Camera](https://www.hbvcamera.com/1MP-%20HD-usb-cameras/hbvcam-ov9732-1mp-hd-face-ar-depth-detection-binocular-synchronous-camera-module.html)
+The provided stereo calibration file is for our setup for our own [Stereo HBV Camera](https://www.hbvcamera.com/1MP-%20HD-usb-cameras/hbvcam-ov9732-1mp-hd-face-ar-depth-detection-binocular-synchronous-camera-module.html). If you are implementing this repo with your own camera, you must do a stereo calibration first. 
 
 The pipeline computes rectification matrices and the reprojection matrix `Q` internally.
 
