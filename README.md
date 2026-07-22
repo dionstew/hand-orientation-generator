@@ -31,6 +31,16 @@ The generated pseudo labels can later be used as training data for external hand
 
 ---
 
+## Pipeline
+
+The pseudo-dataset generation pipeline follows these stages:
+
+<image>
+        <img src="./Diagram-Block-3DHandTracker4.png"/>
+</image>
+
+---
+
 ## Scope of This Repository
 
 This repository is limited to pseudo-dataset generation.
@@ -48,16 +58,6 @@ Translation and rotation pseudo-label generation
 Quaternion temporal smoothing
 CSV and visualization output generation
 ```
-
----
-
-## Pipeline
-
-The pseudo-dataset generation pipeline follows these stages:
-
-<image>
-        <img src="./Diagram-Block-3DHandTracker4.png"/>
-</image>
 
 <!-- 
 The stereo input is assumed to be a side-by-side image where the left camera image is stored on the left half and the right camera image is stored on the right half. -->
